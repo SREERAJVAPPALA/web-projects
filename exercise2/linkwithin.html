@@ -1,0 +1,470 @@
+<html>
+<head>
+<title></title></head>
+<body>
+<p><h1>WEB SERVER AND CSS</h1><br>
+<a href="#webhistory">WEB HISTORY</a><br>
+<a href="#css">CSS</a><br>
+<a href="#csshistory">CSS HISTORY</a><br>
+
+
+<div id="top"></div>
+A web server is computer software and underlying hardware that accepts requests via HTTP, the network protocol created to distribute web content, or its secure variant HTTPS. A user agent, commonly a web browser or web crawler, initiates communication by making a request for a specific resource using HTTP, and the web server responds with the content of that resource or an error message. The web server can also accept and store resources sent from the user agent if configured to do so.[1] [2]
+
+A web server can be a single computer, or even an embedded system such as a router with a built-in configuration interface, but high-traffic websites typically run web servers on fleets of computers designed to handle large numbers of requests for documents, multimedia files and interactive scripts.
+
+A resource sent from a web server can be a preexisting file (static content) available to the web server, or it can be generated at the time of the request (dynamic content) by another program that communicates with the web server program. The former usually can be served faster and can be more easily cached for repeated requests, while the latter supports a broader range of applications.
+
+Technologies such as REST and SOAP, which use HTTP as a basis for general computer-to-computer communication, have extended the application of web servers well beyond their original purpose of serving human-readable pages.
+<br>
+<div id="webhistory"></div>
+
+<h2>History</h2>
+
+In March 1989 Sir Tim Berners-Lee proposed a new project to his employer CERN, with the goal of easing the exchange of information between scientists by using a hypertext system.[3][4] The project resulted in Berners-Lee writing two programs in 1990:
+
+    a Web browser called WorldWideWeb;
+    the world's first Web server, later known as CERN httpd, which ran on NeXTSTEP.
+
+Between 1991 and 1995, the simplicity and effectiveness of early technologies used to surf and exchange data through the World Wide Web helped to port them to many different operating systems and spread their use among scientific organizations and universities, and subsequently to the industry.
+
+In those early years new implementations of both web browsers and web servers (i.e. NCSA HTTPd, etc.) were developed by various organizations, including private ones, thus starting a keen competition that since then has grown exponentially (see also Market share of web server software).
+
+In 1994 Berners-Lee decided to constitute the World Wide Web Consortium (W3C) to regulate the further development of the many technologies involved (HTTP, HTML, etc.) through a standardization process.
+Technical overview
+
+A web server program, when it is running, usually performs several tasks, (i.e.):[1]
+
+    starts, optionally reads and applies settings found in its configuration file(s) or elsewhere, etc.;
+    manages client connection(s) (accepting new ones or closing the existing ones depending on operating conditions);
+    receives client requests (by reading HTTP messages);
+    replies to client requests sending proper HTTP responses (i.e. requested resources or error messages);
+    optionally logs client requests and/or error responses;
+    optionally tries to adapt its behavior depending on its current load conditions (number of client connections, number of client requests, etc.);
+    optionally it is able to start and eventually to stop the execution of external programs used to generate dynamic content;
+    optionally manages the communications with external programs used to generate dynamic content;
+    optionally generates statistics about web traffic managed and/or its performances;
+    etc.
+
+Web server program complexity and efficiency may vary a lot depending on (i.e.):[1]
+
+    common features implemented;
+    performances and scalability level aimed as a goal;
+    software model and techniques adopted to reach wished performances and scalability level;
+    target HW and category of usage, i.e. embedded system, low-medium traffic web server, high traffic Internet web server, etc.;
+    other aspects.
+
+Basic common features
+
+Although web server programs differ in how they are implemented, most of them offer the following basic common features.
+
+    Static content serving: to be able to serve static content (web files) to clients via HTTP protocol.
+    HTTP: support for one or more versions of HTTP protocol in order to send versions of HTTP responses compatible with versions of client HTTP requests, e.g. HTTP/1.0, HTTP/1.1 (eventually also with encrypted connections HTTPS), plus, if available, HTTP/2, HTTP/3.
+    Logging: usually web servers have also the capability of logging some information, about client requests and server responses, to log files for security and statistical purposes.
+
+A few other popular features (only a very short selection) are the following ones.
+
+    Dynamic content serving: to be able to serve dynamic content (generated on the fly) to clients via HTTP protocol.
+    Virtual hosting: to be able to serve many websites (domain names) using only one IP address.
+    Authentication: optional support for authorization request (request of user name and password) before allowing access to some or all kind of website resources.
+    Large file support: to be able to serve files whose size is greater than 2 GB on 32 bit OS.
+    Bandwidth throttling: to limit the speed of content responses in order to not saturate the network and to be able to serve more clients;
+    Rewrite engine: to map beautified parts of URLs (found in client requests) to their real names.
+
+Path translation
+
+Web servers are able to map the path component of a Uniform Resource Locator (URL found in most HTTP request messages) into:
+
+    a local file system resource (for static requests);
+    an internal or external program name (for dynamic requests).
+
+For a static request the URL path specified by the client is relative to the target website's root directory.[5]
+
+Consider the following URL as it would be requested by a client over HTTP:
+
+http://www.example.com/path/file.html
+
+The client's user agent will translate it into a connection to www.example.com with the following HTTP/1.1 request:
+
+GET /path/file.html HTTP/1.1
+Host: www.example.com
+Connection: keep-alive
+
+The web server on www.example.com will append the given path to the path of the (Host) website root directory. On an Apache server, this is commonly /home/www/website (on Unix machines, usually /var/www/website). The result is the local file system resource:
+
+/home/www/www.example.com/path/file.html
+
+The web server then reads the file, if it exists, and sends a response to the client's web browser. The response will describe the content of the file and contain the file itself or an error message will return saying that the file does not exist or is unavailable.
+Kernel-mode and user-mode web servers
+
+A web server software can be either incorporated into the OS and executed in kernel space, or it can be executed in user space (like other regular applications).
+
+Web servers that run in kernel mode (usually called kernel space web servers) can have direct access to kernel resources and so they can be, in theory, faster than those running in user mode; anyway there are disadvantages in running a web server in kernel mode, e.g.: difficulties in developing (debugging) software whereas run-time critical errors may lead to serious problems in OS kernel.
+
+Web servers that run in user-mode have to ask the system for permission to use more memory or more CPU resources. Not only do these requests to the kernel take time, but they are not always satisfied because the system reserves resources for its own usage and has the responsibility to share hardware resources with all the other running applications. Executing in user mode can also mean useless buffer copies which are another limitation for user-mode web servers.
+
+Nowadays almost all web server software is executed in user mode (because many of above small disadvantages have been overcome by faster hardware, new OS versions, much faster OS system calls and new web server software). See also comparison of web server software to discover which of them run in kernel mode or in user mode (also referred as kernel space or user space).
+Performances
+
+To improve the user experience (on client / browser side), a web server should reply quickly (as soon as possible) to client requests; unless content response is throttled (by configuration) for some type of files (e.g. big files, etc.), also returned data content should be sent as fast as possible (high transfer speed).
+
+In other words, a web server should always be very responsive, even under high load of web traffic, in order to keep total user's wait (sum of browser time + network time + web server response time) for a response as low as possible.
+Performance metrics
+
+For web server software, main key performance metrics (measured under vary operating conditions) usually are at least the following ones (i.e.):[6] [7]
+
+    number of requests per second (RPS, similar to QPS, depending on HTTP version and configuration, type of HTTP requests, etc.);
+    number of connections per second (CPS), is the number of connections per second accepted by web server (useful when using HTTP/1.0 or HTTP/1.1 with a very low limit of requests / responses per connection, i.e. 1 .. 20);
+    network latency + response time for each new client request; usually benchmark tool shows how many requests have been satisfied within a scale of time laps (i.e. within 1ms, 3ms, 5ms, 10ms, etc.) and / or the shortest, the average and the longest response time;
+    throughput of responses, in bytes per second.
+
+Among the operating conditions, the number (1 .. n) of concurrent client connections used during a test is an important parameter because it allows to correlate the concurrency level supported by web server with results of the tested performance metrics.
+Software efficiency
+
+The specific web server software design and model adopted (i.e.):
+
+    single process or multi-process;
+    single thread (no thread) or multi-thread for each process;
+    etc.;
+
+and other programming techniques (i.e. zero copy, etc.) used to implement a web server program can bias a lot the performances and in particular the scalability level that can be reached under heavy load or when using high end hardware (many CPUs, disks, etc.).
+
+In practice some web server software models may require more OS resources (i.e. more CPUs, more RAM, etc.) than others to be able to work well and so to reach target performances.
+Operating conditions
+
+There are many operating conditions that can affect the performances of a web server; performance values may vary depending on (i.e.):
+
+    the settings of web server (including the fact that log file is or is not enabled, etc.);
+    the HTTP version used by client requests;
+    the average HTTP request type (method, length of HTTP headers and optional body, etc.);
+    whether the requested content is static or dynamic;
+    whether the content is cached or not cached (by server and/or by client);
+    whether the content is compressed on the fly (when transferred), pre-compressed (i.e. when a file resource is stored on disk already compressed so that web server can send that file directly to the network with the only indication that its content is compressed) or not compressed at all;
+    whether the connections are or are not encrypted;
+    the average network speed between web server and its clients;
+    the number of active TCP connections;
+    the hardware and software limitations or settings of the OS of the computer(s) on which the web server runs;
+    etc.
+
+Benchmarking
+
+Performances of a web server are typically benchmarked by using one or more of the available automated load testing tools.
+Load limits
+
+A web server (program installation) usually has pre-defined load limits for each combination of operating conditions, also because it is limited by OS resources and because it can handle only a limited number of concurrent client connections (usually between 2 and several tens of thousands for each active web server process, see also the C10k problem and the C10M problem).
+
+When a web server is near to or over its load limits, it gets overloaded and so it may become unresponsive.
+Causes of overload
+
+At any time web servers can be overloaded due to one or more of the following causes (i.e.).
+
+    Excess legitimate web traffic. Thousands or even millions of clients connecting to the website in a short interval, e.g., Slashdot effect.
+    Distributed Denial of Service attacks. A denial-of-service attack (DoS attack) or distributed denial-of-service attack (DDoS attack) is an attempt to make a computer or network resource unavailable to its intended users.
+    Computer worms that sometimes cause abnormal traffic because of millions of infected computers (not coordinated among them).
+    XSS worms can cause high traffic because of millions of infected browsers or web servers.
+    Internet bots Traffic not filtered/limited on large websites with very few resources (bandwidth, etc.).
+    Internet (network) slowdowns (due to packet losses, etc.) so that client requests are served more slowly and the number of connections increases so much that server limits are reached.
+    Web servers (computers) partial unavailability. This can happen because of required or urgent maintenance or upgrade, hardware or software failures such as back-end (e.g. database) failures, etc.; in these cases the remaining web servers may get too much traffic and become overloaded.
+
+Symptoms of overload
+
+The symptoms of an overloaded web server are usually the following ones (i.e.).
+
+    Requests are served with (possibly long) delays (from 1 second to a few hundred seconds).
+    The web server returns an HTTP error code, such as 500, 502,[8] [9] 503,[10] 504,[11] 408, or even an intermittent 404.
+    The web server refuses or resets (interrupts) TCP connections before it returns any content.
+    In very rare cases, the web server returns only a part of the requested content. This behavior can be considered a bug, even if it usually arises as a symptom of overload.
+
+Anti-overload techniques
+
+To partially overcome above average load limits and to prevent overload, most popular websites use common techniques like the following ones (i.e.).
+
+    Tuning OS parameters for hardware capabilities and usage.
+    Tuning web server(s) parameters to improve security, performances, etc.
+    Deploying web cache techniques (not only for static contents but, whenever possible, for dynamic contents too).
+    Managing network traffic, by using:
+        Firewalls to block unwanted traffic coming from bad IP sources or having bad patterns;
+        HTTP traffic managers to drop, redirect or rewrite requests having bad HTTP patterns;
+        Bandwidth management and traffic shaping, in order to smooth down peaks in network usage.
+    Using different domain names, IP addresses and computers to serve different kinds (static and dynamic) of content; the aim is to separate big or huge files (download.*) (it might be also a CDN) from small and medium-sized files (static.*) and from main dynamic site (maybe where some contents are stored in a backend database) (www.*); the idea is to be able to efficiently serve big or huge (over 10 – 1000 MB) files (maybe throttling downloads) and to fully cache small and medium-sized files, without affecting performances of dynamic site under heavy load, by using different settings for each (group) of web server computers, e.g.:
+        http://download.example.com
+        http://static.example.com
+        http://www.example.com
+    Using many web servers (computers) that are grouped together behind a load balancer so that they act or are seen as one big web server.
+    Adding more hardware resources (i.e. RAM, fast disks) to each computer.
+    Using more efficient computer programs for web servers (see also: software efficiency, etc.).
+    Using the most efficient Web Server Gateway Interface to process dynamic requests (spawning one or more external programs everytime a dynamic page is retrieved, kills performances).
+    Using other programming techniques and workarounds, especially if dynamic content is involved, to speed up the HTTP responses (i.e. by avoiding dynamic calls to retrieve objects, such as style sheets, images, etc., that never change or change very rarely, by copying that content to static files once and then keeping them synchronized with dynamic content, etc.).
+    Using latest efficient versions of HTTP (e.g. beyond using common HTTP/1.1 also by enabling HTTP/2 and maybe HTTP/3 too, whenever available web server software has reliable support for the latter two protocols) in order to reduce a lot the number of TCP/IP connections started by each client and the size of data exchanged (because of more compact HTTP headers representation, data compression, etc.); anyway, even if newer HTTP (2 and 3) protocols usually generate less network traffic for each request / response data, they may require more OS resources (i.e. RAM and CPU) used by web server software (because of encrypted data, data compression on the fly and other implementation details).
+<br>
+<h2>MARKET SHARE</h2><br>
+February 2021
+
+Below are the latest statistics of the market share of all sites of the top web servers on the Internet by Netcraft February 2021 Web Server Survey.
+Product 	Vendor 	Percent
+nginx 	NGINX, Inc. 	34.54%
+Apache 	Apache 	26.32%
+IIS 	Microsoft 	6.5%
+OpenResty 	OpenResty Software Foundation 	6.36%
+Cloudflare Server 	Cloudflare, Inc. 	5.0%
+
+All other web servers are used by less than 5% of the websites.
+February 2020
+
+Below are the latest statistics of the market share of all sites of the top web servers on the Internet by Netcraft February 2020 Web Server Survey.
+Product 	Vendor 	Percent
+nginx 	NGINX, Inc. 	36.48%
+Apache 	Apache 	24.5%
+IIS 	Microsoft 	14.21%
+OpenResty 	OpenResty Software Foundation 	4.00%
+GWS 	Google 	3.18%
+Cloudflare Server 	Cloudflare, Inc. 	3.0%
+
+All other web servers are used by less than 3% of the websites.
+February 2019
+
+Below are the latest statistics of the market share of all sites of the top web servers on the Internet by Netcraft February 2019 Web Server Survey.
+Product 	Vendor 	Percent
+IIS 	Microsoft 	28.42%
+Apache 	Apache 	26.16%
+nginx 	NGINX, Inc. 	25.34%
+GWS 	Google 	1.66%
+
+All other web servers are used by less than 1% of the websites.
+July 2018
+
+Below are the latest statistics of the market share of all sites of the top web servers on the Internet by Netcraft February 2018 Web Server Survey.
+Product 	Vendor 	Percent
+IIS 	Microsoft 	34.50%
+Apache 	Apache 	27.45%
+nginx 	NGINX, Inc. 	24.32%
+GWS 	Google 	1.20%
+
+All other web servers are used by less than 1% of the websites.
+February 2017
+
+Below are the latest statistics of the market share of all sites of the top web servers on the Internet by Netcraft February 2017 Web Server Survey.
+Product 	Vendor 	January 2017 	Percent 	February 2017 	Percent 	Change 	Chart color
+IIS 	Microsoft 	821,905,283 	45.66% 	773,552,454 	43.16% 	−2.50 	red
+Apache 	Apache 	387,211,503 	21.51% 	374,297,080 	20.89% 	−0.63 	black
+nginx 	NGINX, Inc. 	317,398,317 	17.63% 	348,025,788 	19.42% 	1.79 	green
+GWS 	Google 	17,933,762 	1.00% 	18,438,702 	1.03% 	0.03 	blue
+February 2016
+
+Below are the latest statistics of the market share of all sites of the top web servers on the Internet by Netcraft February 2016 Web Server Survey.
+Product 	Vendor 	January 2016 	Percent 	February 2016 	Percent 	Change 	Chart color
+Apache 	Apache 	304,271,061 	33.56% 	306,292,557 	32.80% 	0.76 	black
+IIS 	Microsoft 	262,471,886 	28.95% 	278,593,041 	29.83% 	0.88 	red
+nginx 	NGINX, Inc. 	141,443,630 	15.60% 	137,459,391 	16.61% 	−0.88 	green
+GWS 	Google 	20,799,087 	2.29% 	20,640,058 	2.21% 	−0.08 	blue
+
+Apache, IIS and Nginx are the most used web servers on the World Wide Web.[12][13]<br>
+<a href="#top">TOP OF THE PAGE</a><br>
+<div id="css"></div>
+<h2>CSS</h2><BR>
+Cascading Style Sheets (CSS) is a style sheet language used for describing the presentation of a document written in a markup language such as HTML.[1] CSS is a cornerstone technology of the World Wide Web, alongside HTML and JavaScript.[2]
+
+CSS is designed to enable the separation of presentation and content, including layout, colors, and fonts.[3] This separation can improve content accessibility; provide more flexibility and control in the specification of presentation characteristics; enable multiple web pages to share formatting by specifying the relevant CSS in a separate .css file, which reduces complexity and repetition in the structural content; and enable the .css file to be cached to improve the page load speed between the pages that share the file and its formatting.
+
+Separation of formatting and content also makes it feasible to present the same markup page in different styles for different rendering methods, such as on-screen, in print, by voice (via speech-based browser or screen reader), and on Braille-based tactile devices. CSS also has rules for alternate formatting if the content is accessed on a mobile device.[4]
+
+The name cascading comes from the specified priority scheme to determine which style rule applies if more than one rule matches a particular element. This cascading priority scheme is predictable.
+
+The CSS specifications are maintained by the World Wide Web Consortium (W3C). Internet media type (MIME type) text/css is registered for use with CSS by RFC 2318 (March 1998). The W3C operates a free CSS validation service for CSS documents.[5]
+
+In addition to HTML, other markup languages support the use of CSS including XHTML, plain XML, SVG, and XUL. <br>
+<h2>syntax</h2><br>
+
+CSS has a simple syntax and uses a number of English keywords to specify the names of various style properties.
+
+A style sheet consists of a list of rules. Each rule or rule-set consists of one or more selectors, and a declaration block.
+Selector
+
+In CSS, selectors declare which part of the markup a style applies to by matching tags and attributes in the markup itself.
+
+Selectors may apply to the following:
+
+    all elements of a specific type, e.g. the second-level headers h2
+    elements specified by attribute, in particular:
+        id: an identifier unique within the document, identified with a hash prefix e.g. #id
+        class: an identifier that can annotate multiple elements in a document, identified with a period prefix e.g. .classname
+    elements depending on how they are placed relative to others in the document tree.
+
+Classes and IDs are case-sensitive, start with letters, and can include alphanumeric characters, hyphens, and underscores. A class may apply to any number of instances of any elements. An ID may only be applied to a single element.
+
+Pseudo-classes are used in CSS selectors to permit formatting based on information that is not contained in the document tree. One example of a widely used pseudo-class is :hover, which identifies content only when the user "points to" the visible element, usually by holding the mouse cursor over it. It is appended to a selector as in a:hover or #elementid:hover. A pseudo-class classifies document elements, such as :link or :visited, whereas a pseudo-element makes a selection that may consist of partial elements, such as ::first-line or ::first-letter.[6]
+
+Selectors may be combined in many ways to achieve great specificity and flexibility.[7] Multiple selectors may be joined in a spaced list to specify elements by location, element type, id, class, or any combination thereof. The order of the selectors is important. For example, div .myClass {color: red;} applies to all elements of class myClass that are inside div elements, whereas .myClass div {color: red;} applies to all div elements that are inside elements of class myClass. This is not to be confused with concatenated identifiers such as div.myClass {color: red;} which applies to div elements of class myClass.
+
+The following table provides a summary of selector syntax indicating usage and the version of CSS that introduced it.[8]
+Pattern 	Matches 	First defined
+in CSS level
+E 	an element of type E 	1
+E:link 	an E element is the source anchor of a hyperlink of which the target is not yet visited (:link) or already visited (:visited) 	1
+E:active 	an E element during certain user actions 	1
+E::first-line 	the first formatted line of an E element 	1
+E::first-letter 	the first formatted letter of an E element 	1
+.c 	all elements with class="c" 	1
+#myid 	the element with id="myid" 	1
+E.warning 	an E element whose class is "warning" (the document language specifies how class is determined) 	1
+E#myid 	an E element with ID equal to "myid" 	1
+.c#myid 	the element with class="c" and ID equal to "myid" 	1
+E F 	an F element descendant of an E element 	1
+* 	any element 	2
+E[foo] 	an E element with a "foo" attribute 	2
+E[foo="bar"] 	an E element whose "foo" attribute value is exactly equal to "bar" 	2
+E[foo~="bar"] 	an E element whose "foo" attribute value is a list of whitespace-separated values, one of which is exactly equal to "bar" 	2
+E[foo|="en"] 	an E element whose "foo" attribute has a hyphen-separated list of values beginning (from the left) with "en" 	2
+E:first-child 	an E element, first child of its parent 	2
+E:lang(fr) 	an element of type E in language "fr" (the document language specifies how language is determined) 	2
+E::before 	generated content before an E element's content 	2
+E::after 	generated content after an E element's content 	2
+E > F 	an F element child of an E element 	2
+E + F 	an F element immediately preceded by an E element 	2
+E[foo^="bar"] 	an E element whose "foo" attribute value begins exactly with the string "bar" 	3
+E[foo$="bar"] 	an E element whose "foo" attribute value ends exactly with the string "bar" 	3
+E[foo*="bar"] 	an E element whose "foo" attribute value contains the substring "bar" 	3
+E:root 	an E element, root of the document 	3
+E:nth-child(n) 	an E element, the n-th child of its parent 	3
+E:nth-last-child(n) 	an E element, the n-th child of its parent, counting from the last one 	3
+E:nth-of-type(n) 	an E element, the n-th sibling of its type 	3
+E:nth-last-of-type(n) 	an E element, the n-th sibling of its type, counting from the last one 	3
+E:last-child 	an E element, last child of its parent 	3
+E:first-of-type 	an E element, first sibling of its type 	3
+E:last-of-type 	an E element, last sibling of its type 	3
+E:only-child 	an E element, only child of its parent 	3
+E:only-of-type 	an E element, only sibling of its type 	3
+E:empty 	an E element that has no children (including text nodes) 	3
+E:target 	an E element being the target of the referring URI 	3
+E:enabled 	a user interface element E that is enabled 	3
+E:disabled 	a user interface element E that is disabled 	3
+E:checked 	a user interface element E that is checked (for instance a radio-button or checkbox) 	3
+E:not(s) 	an E element that does not match simple selector s 	3
+E ~ F 	an F element preceded by an E element 	3
+Declaration block
+
+A declaration block consists of a list of declarations in braces. Each declaration itself consists of a property, a colon (:), and a value. If there are multiple declarations in a block, a semi-colon (;) must be inserted to separate each declaration. An optional semi-colon after the last (or single) declaration may be used.[9]
+
+Properties are specified in the CSS standard. Each property has a set of possible values. Some properties can affect any type of element, and others apply only to particular groups of elements.[10][11]
+
+Values may be keywords, such as "center" or "inherit", or numerical values, such as 200px (200 pixels), 50vw (50 percent of the viewport width) or 80% (80 percent of the parent element's width). Color values can be specified with keywords (e.g. "red"), hexadecimal values (e.g. #FF0000, also abbreviated as #F00), RGB values on a 0 to 255 scale (e.g. rgb(255, 0, 0)), RGBA values that specify both color and alpha transparency (e.g. rgba(255, 0, 0, 0.8)), or HSL or HSLA values (e.g. hsl(000, 100%, 50%), hsla(000, 100%, 50%, 80%)).[12]
+Length units
+
+Non-zero numeric values representing linear measures must include a length unit, which is either an alphabetic code or abbreviation, as in 200px or 50vw; or a percentage sign, as in 80%. Some units – cm (centimetre); in (inch); mm (millimetre); pc (pica); and pt (point) – are absolute, which means that the rendered dimension does not depend upon the structure of the page; others – em (em); ex (ex) and px (pixel) – are relative, which means that factors such as the font size of a parent element can affect the rendered measurement. These eight units were a feature of CSS 1[13] and retained in all subsequent revisions. The proposed CSS Values and Units Module Level 3 will, if adopted as a W3C Recommendation, provide seven further length units: ch; Q; rem; vh; vmax; vmin; and vw.[14]
+Use
+
+Before CSS, nearly all presentational attributes of HTML documents were contained within the HTML markup. All font colors, background styles, element alignments, borders and sizes had to be explicitly described, often repeatedly, within the HTML. CSS lets authors move much of that information to another file, the style sheet, resulting in considerably simpler HTML.
+
+For example, headings (h1 elements), sub-headings (h2), sub-sub-headings (h3), etc., are defined structurally using HTML. In print and on the screen, choice of font, size, color and emphasis for these elements is presentational.
+
+Before CSS, document authors who wanted to assign such typographic characteristics to, say, all h2 headings had to repeat HTML presentational markup for each occurrence of that heading type. This made documents more complex, larger, and more error-prone and difficult to maintain. CSS allows the separation of presentation from structure. CSS can define color, font, text alignment, size, borders, spacing, layout and many other typographic characteristics, and can do so independently for on-screen and printed views. CSS also defines non-visual styles, such as reading speed and emphasis for aural text readers. The W3C has now deprecated the use of all presentational HTML markup.<br>
+<a href="#top">TOP OF THE PAGE</a><br>
+<div id="csshistory"></div>
+<h2>HISTORY</h2><br>
+CSS was first proposed by Håkon Wium Lie on October 10, 1994.[22] At the time, Lie was working with Tim Berners-Lee at CERN.[23] Several other style sheet languages for the web were proposed around the same time, and discussions on public mailing lists and inside World Wide Web Consortium resulted in the first W3C CSS Recommendation (CSS1)[24] being released in 1996. In particular, a proposal by Bert Bos was influential; he became co-author of CSS1, and is regarded as co-creator of CSS.[25]
+
+Style sheets have existed in one form or another since the beginnings of Standard Generalized Markup Language (SGML) in the 1980s, and CSS was developed to provide style sheets for the web.[26] One requirement for a web style sheet language was for style sheets to come from different sources on the web. Therefore, existing style sheet languages like DSSSL and FOSI were not suitable. CSS, on the other hand, let a document's style be influenced by multiple style sheets by way of "cascading" styles.[26]
+
+As HTML grew, it came to encompass a wider variety of stylistic capabilities to meet the demands of web developers. This evolution gave the designer more control over site appearance, at the cost of more complex HTML. Variations in web browser implementations, such as ViolaWWW and WorldWideWeb,[27] made consistent site appearance difficult, and users had less control over how web content was displayed. The browser/editor developed by Tim Berners-Lee had style sheets that were hard-coded into the program. The style sheets could therefore not be linked to documents on the web.[23] Robert Cailliau, also of CERN, wanted to separate the structure from the presentation so that different style sheets could describe different presentation for printing, screen-based presentations, and editors.[27]
+
+Improving web presentation capabilities was a topic of interest to many in the web community and nine different style sheet languages were proposed on the www-style mailing list.[26] Of these nine proposals, two were especially influential on what became CSS: Cascading HTML Style Sheets[22] and Stream-based Style Sheet Proposal (SSP).[25][28] Two browsers served as testbeds for the initial proposals; Lie worked with Yves Lafon to implement CSS in Dave Raggett's Arena browser.[29][30][31] Bert Bos implemented his own SSP proposal in the Argo browser.[25] Thereafter, Lie and Bos worked together to develop the CSS standard (the 'H' was removed from the name because these style sheets could also be applied to other markup languages besides HTML).[23]
+
+Lie's proposal was presented at the "Mosaic and the Web" conference (later called WWW2) in Chicago, Illinois in 1994, and again with Bert Bos in 1995.[23] Around this time the W3C was already being established, and took an interest in the development of CSS. It organized a workshop toward that end chaired by Steven Pemberton. This resulted in W3C adding work on CSS to the deliverables of the HTML editorial review board (ERB). Lie and Bos were the primary technical staff on this aspect of the project, with additional members, including Thomas Reardon of Microsoft, participating as well. In August 1996, Netscape Communication Corporation presented an alternative style sheet language called JavaScript Style Sheets (JSSS).[23] The spec was never finished, and is deprecated.[32] By the end of 1996, CSS was ready to become official, and the CSS level 1 Recommendation was published in December.
+
+Development of HTML, CSS, and the DOM had all been taking place in one group, the HTML Editorial Review Board (ERB). Early in 1997, the ERB was split into three working groups: HTML Working group, chaired by Dan Connolly of W3C; DOM Working group, chaired by Lauren Wood of SoftQuad; and CSS Working group, chaired by Chris Lilley of W3C.
+
+The CSS Working Group began tackling issues that had not been addressed with CSS level 1, resulting in the creation of CSS level 2 on November 4, 1997. It was published as a W3C Recommendation on May 12, 1998. CSS level 3, which was started in 1998, is still under development as of 2014.
+
+In 2005, the CSS Working Groups decided to enforce the requirements for standards more strictly. This meant that already published standards like CSS 2.1, CSS 3 Selectors, and CSS 3 Text were pulled back from Candidate Recommendation to Working Draft level.
+Difficulty with adoption
+Ambox current red Americas.svg
+	
+This section needs to be updated. Please help update this article to reflect recent events or newly available information. (January 2019)
+
+The CSS 1 specification was completed in 1996. Microsoft's Internet Explorer 3[23] was released in that year, featuring some limited support for CSS. IE 4 and Netscape 4.x added more support, but it was typically incomplete and had many bugs that prevented CSS from being usefully adopted. It was more than three years before any web browser achieved near-full implementation of the specification. Internet Explorer 5.0 for the Macintosh, shipped in March 2000, was the first browser to have full (better than 99 percent) CSS 1 support,[33] surpassing Opera, which had been the leader since its introduction of CSS support fifteen months earlier. Other browsers followed soon afterward, and many of them additionally implemented parts of CSS 2.[citation needed]
+
+However, even when later 'version 5' web browsers began to offer a fairly full implementation of CSS, they were still incorrect in certain areas and were fraught with inconsistencies, bugs and other quirks. Microsoft Internet Explorer 5.x for Windows, as opposed to the very different IE for Macintosh, had a flawed implementation of the 'CSS box model', as compared with the CSS standards. Such inconsistencies and variation in feature support made it difficult for designers to achieve a consistent appearance across browsers and platforms without the use of workarounds termed CSS hacks and filters. The IE/Windows box model bugs were so serious that, when Internet Explorer 6 was released, Microsoft introduced a backwards-compatible mode of CSS interpretation ('quirks mode') alongside an alternative, corrected 'standards mode'. Other non-Microsoft browsers also provided such 'mode'-switch behavior capability. It therefore became necessary for authors of HTML files to ensure they contained special distinctive 'standards-compliant CSS intended' marker to show that the authors intended CSS to be interpreted correctly, in compliance with standards, as opposed to being intended for the now long-obsolete IE5/Windows browser. Without this marker, web browsers that have the 'quirks mode'-switching capability will size objects in web pages as IE5/Windows would rather than following CSS standards.[citation needed]
+
+Problems with patchy adoption of CSS, along with errata in the original specification, led the W3C to revise the CSS 2 standard into CSS 2.1, which moved nearer to a working snapshot of current CSS support in HTML browsers. Some CSS 2 properties that no browser successfully implemented were dropped, and in a few cases, defined behaviors were changed to bring the standard into line with the predominant existing implementations. CSS 2.1 became a Candidate Recommendation on February 25, 2004, but CSS 2.1 was pulled back to Working Draft status on June 13, 2005,[34] and only returned to Candidate Recommendation status on July 19, 2007.[35]
+
+In addition to these problems, the .css extension was used by a software product used to convert PowerPoint files into Compact Slide Show files,[36] so some web servers served all .css[37] as MIME type application/x-pointplus[38] rather than text/css.
+Vendor prefixes
+
+Individual browser vendors occasionally introduced new parameters ahead of standardization and universalization. To prevent interfering with future implementations, vendors prepended unique names to the parameters, such as -moz- for Mozilla Firefox, -webkit- named after the browsing engine of Apple Safari, -o- for Opera Browser and -ms- for Microsoft Internet Explorer.
+
+Occasionally, the parameters with vendor prefix such as -moz-radial-gradient and -webkit-linear-gradient have slightly different syntax as compared to their non-vendor-prefix counterparts.[39]
+
+Prefixed properties are rendered obsolete by the time of standardization. Programs are available to automatically add prefixes for older browsers, and to point out standardized versions of prefixed parameters. Since prefixes are limited to a small subset of browsers, removing the prefix allows other browsers to see the functionality. An exception is certain obsolete -webkit- prefixed properties, which are so common and persistent on the web that other families of browsers have decided to support them for compatibility.[40]
+Variations
+
+CSS has various levels and profiles. Each level of CSS builds upon the last, typically adding new features and typically denoted as CSS 1, CSS 2, CSS 3, and CSS 4. Profiles are typically a subset of one or more levels of CSS built for a particular device or user interface. Currently there are profiles for mobile devices, printers, and television sets. Profiles should not be confused with media types, which were added in CSS 2.
+CSS 1
+
+The first CSS specification to become an official W3C Recommendation is CSS level 1, published on December 17, 1996. Håkon Wium Lie and Bert Bos are credited as the original developers.[41][42] Among its capabilities are support for
+
+    Font properties such as typeface and emphasis
+    Color of text, backgrounds, and other elements
+    Text attributes such as spacing between words, letters, and lines of text
+    Alignment of text, images, tables and other elements
+    Margin, border, padding, and positioning for most elements
+    Unique identification and generic classification of groups of attributes
+
+The W3C no longer maintains the CSS 1 Recommendation.[43]
+CSS 2
+
+CSS level 2 specification was developed by the W3C and published as a recommendation in May 1998. A superset of CSS 1, CSS 2 includes a number of new capabilities like absolute, relative, and fixed positioning of elements and z-index, the concept of media types, support for aural style sheets (which were later replaced by the CSS 3 speech modules)[44] and bidirectional text, and new font properties such as shadows.
+
+The W3C no longer maintains the CSS 2 recommendation.[45]
+CSS 2.1
+
+CSS level 2 revision 1, often referred to as "CSS 2.1", fixes errors in CSS 2, removes poorly supported or not fully interoperable features and adds already implemented browser extensions to the specification. To comply with the W3C Process for standardizing technical specifications, CSS 2.1 went back and forth between Working Draft status and Candidate Recommendation status for many years. CSS 2.1 first became a Candidate Recommendation on February 25, 2004, but it was reverted to a Working Draft on June 13, 2005 for further review. It returned to Candidate Recommendation on 19 July 2007 and then updated twice in 2009. However, because changes and clarifications were made, it again went back to Last Call Working Draft on 7 December 2010.
+
+CSS 2.1 went to Proposed Recommendation on 12 April 2011.[46] After being reviewed by the W3C Advisory Committee, it was finally published as a W3C Recommendation on 7 June 2011.[47]
+
+CSS 2.1 was planned as the first and final revision of level 2—but low priority work on CSS 2.2 began in 2015.
+CSS 3
+"CSS3" redirects here. For other uses, see CSS3 (disambiguation).
+
+Unlike CSS 2, which is a large single specification defining various features, CSS 3 is divided into several separate documents called "modules". Each module adds new capabilities or extends features defined in CSS 2, preserving backward compatibility. Work on CSS level 3 started around the time of publication of the original CSS 2 recommendation. The earliest CSS 3 drafts were published in June 1999.[48]
+
+Due to the modularization, different modules have different stability and statuses.[49]
+
+Some modules have Candidate Recommendation (CR) status and are considered moderately stable. At CR stage, implementations are advised to drop vendor prefixes.[50]
+Ambox current red Americas.svg
+	
+This article needs to be updated. Please help update this article to reflect recent events or newly available information. (January 2021)
+Summary of main module-specifications[51] Module 	Specification title 	Status 	Date
+css3-background 	CSS Backgrounds and Borders Module Level 3  	Candidate Rec. 	Dec 2020
+css3-box 	CSS basic box model 	Candidate Rec. 	Dec 2020
+css-cascade-3 	CSS Cascading and Inheritance Level 3  	Recommendation 	Feb 2021
+css3-color 	CSS Color Module Level 3 	Recommendation 	Jun 2018
+css3-content 	CSS3 Generated and Replaced Content Module  	Working Draft 2 	Aug 2019
+css-fonts-3 	CSS Fonts Module Level 3 	Recommendation 	Sep 2018
+css3-gcpm 	CSS Generated Content for Paged Media Module 	Working Draft 	May 2014
+css3-layout 	CSS Template Layout Module 	Note 	Mar 2015
+css3-mediaqueries  	Media Queries 	Recommendation 	Jun 2012
+mediaqueries-4  	Media Queries Level 4 	Candidate Rec. 	Jul 2020
+css3-multicol  	Multi-column Layout Module Level 1 	Working Draft 	Feb 2021
+css3-page 	CSS Paged Media Module Level 3 	Working Draft 	Oct 2018
+selectors-3 	Selectors Level 3 	Recommendation 	Nov 2018
+selectors-4 	Selectors Level 4 	Working Draft 	Nov 2018
+css3-ui 	CSS Basic User Interface Module Level 3 (CSS3 UI) 	Recommendation 	Jun 2018
+CSS 4
+"CSS4" redirects here. For other uses, see CSS4 (disambiguation).
+File:CSS Standardization - The State of the Web.webmPlay media
+Jen Simmons discussing the state of CSS in 2019, as several CSS 4 modules were being advanced
+
+There is no single, integrated CSS4 specification,[52] because the specification has been split into many separate modules which level independently.
+
+Modules that build on things from CSS Level 2 started at Level 3. Some of them have already reached Level 4 or are already approaching Level 5. Other modules that define entirely new functionality, such as Flexbox,[53] have been designated as Level 1 and some of them are approaching Level 2.
+
+The CSS Working Group sometimes publishes "Snapshots", a collection of whole modules and parts of other drafts that are considered stable enough to be implemented by browser developers. So far, five such "best current practices" documents have been published as Notes, in 2007,[54] 2010,[55] 2015,[56] 2017,[57] and 2018.[58]
+
+Since these specification snapshots are primarily intended for developers, there has been growing demand for as similar versioned reference document targeted at authors, which would present the state of interoperable implementations as meanwhile documented by sites like Can I Use…[59] and the Mozilla Developer Network.[60] A W3C Community Group has been established in early 2020 in order to discuss and define such a resource.[61] The actual kind of versioning is also up to debate, which means that the document once produced might not be called "CSS4".<br>
+<a href="#top">TOP OF THE PAGE</a><br> 
+
+
+
+
+</body>
+</html>
